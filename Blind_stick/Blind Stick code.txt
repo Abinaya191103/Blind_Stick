@@ -1,0 +1,49 @@
+// Blind Stick Project
+
+const int trigPin = 9;
+const int echoPin = 10;
+
+float duration, distance;
+
+const int sensorPin = 2;
+const int ledPin = 13;
+int sensorValue = 0;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(sensorPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Ultrasonic Trigger Pulse
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Ultrasonic Echo Reading
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration * 0.0343) / 2;
+
+  // Display Distance
+  Serial.print("Distance: ");
+  Serial.println(distance);
+  delay(100);
+
+  // Read Vibration Sensor
+  sensorValue = digitalRead(sensorPin);
+  Serial.print("Vibration Sensor Value: ");
+  Serial.println(sensorValue);
+
+  // LED Trigger on Vibration Detection
+  if (sensorValue == HIGH) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("Vibration detected!");
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+}
